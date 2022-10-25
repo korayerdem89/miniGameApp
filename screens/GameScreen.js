@@ -27,6 +27,12 @@ function GameScreen({ userNumber, onGameOver }) {
     }
   }, [currentGuess, userNumber, onGameOver]);
 
+  useEffect(() => {
+  minBoundary = 1;
+  maxBoundary = 100;
+  }, [])
+  
+
   function nextGuessHandler(direction) {
     if (
       (direction === "lower" && currentGuess < userNumber) ||
@@ -35,6 +41,7 @@ function GameScreen({ userNumber, onGameOver }) {
       Alert.alert("Don't lie!", "You know that this is wrong...", [
         { text: "Sorry!", style: "cancel" },
       ]);
+      return;
     }
     if (direction === "lower") {
       maxBoundary = currentGuess;
@@ -54,14 +61,18 @@ function GameScreen({ userNumber, onGameOver }) {
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentGuess}</NumberContainer>
       <Card>
-        <InstructionText>Higher or lower?</InstructionText>
-        <View>
+        <InstructionText style={styles.InstructionText}>Higher or lower?</InstructionText>
+        <View style={styles.buttonsContainer}>
+        <View style={styles.buttonContainer}>
           <PrimaryButton onPress={nextGuessHandler.bind(this, "lower")}>
             -
           </PrimaryButton>
+          </View>
+          <View style={styles.buttonContainer}>
           <PrimaryButton onPress={nextGuessHandler.bind(this, "greater")}>
             +
           </PrimaryButton>
+          </View>
         </View>
       </Card>
     </View>
@@ -76,4 +87,13 @@ const styles = StyleSheet.create({
     paddingVertical: 44,
     paddingHorizontal: 24,
   },
+  buttonsContainer: {
+    flexDirection: 'row'
+},
+buttonContainer: {
+    flex: 1
+},
+InstructionText:{
+  marginBottom:12
+}
 });
